@@ -6,42 +6,49 @@ public class IsBinarySearchTree {
 	public static void main(String[] args) {
 		IsBinarySearchTree tree = new IsBinarySearchTree();
 
-		Node node1 = new Node(1);
-		Node node2 = new Node(2);
-		Node node3 = new Node(3);
-		Node node4 = new Node(4);
-		Node node5 = new Node(5);
-		Node node6 = new Node(6);
-		Node node7 = new Node(7);
+		tree.root = new Node(4);
+		tree.root.left = new Node(2);
+		tree.root.right = new Node(5);
+		tree.root.left.left = new Node(1);
+		tree.root.left.right = new Node(3);
 
-		tree.root = node1;
-
-		node1.left = node2;
-		node1.right = node3;
-
-		node2.left = node4;
-		node2.right = node5;
-
-		node3.left = node6;
-		node3.right = node7;
-
-		//System.out.println("Is Binary Search Tree : " + tree.isBST(tree.root));
+		tree.isBSTUsingInorder(tree.root);
 	}
 
-	/*private boolean isBST(Node node) {
-		Node prev = null;
-		// traverse the tree in inorder fashion and
-		// keep a track of previous node
-		if (root == null) {
-			if (!isBST(root.left))
-				return false;
+	/**
+	 * If in-order traversal is sorted then it is a BST
+	 * 
+	 */
+	private void isBSTUsingInorder(Node node) {
+		if (node == null)
+			return;
 
-			// allows only distinct values node
-			if (prev != null && root.key <= prev.key)
-				return false;
-			prev = root;
-			return isBST(root.right);
-		}
-		return true;
-	}*/
+		isBSTUsingInorder(node.left);
+		System.out.print(node.key + " ");
+		isBSTUsingInorder(node.right);
+	}
+
+	/**
+	 * Reference :
+	 * http://stackoverflow.com/questions/10832496/finding-if-a-binary
+	 * -tree-is-a-binary-search-tree
+	 * 
+	 * http://www.geeksforgeeks.org/a-program-to-check
+	 * -if-a-binary-tree-is-bst-or-not/
+	 * 
+	 */
+	public boolean isValid(Node root) {
+		return isValidBST(root, Integer.MIN_VALUE, Integer.MAX_VALUE);
+	}
+
+	private boolean isValidBST(Node node, int MIN, int MAX) {
+		if (node == null)
+			return true;
+		if (node.key > MIN && node.key < MAX
+				&& isValidBST(node.left, MIN, node.key)
+				&& isValidBST(node.right, node.key, MAX))
+			return true;
+		else
+			return false;
+	}
 }
